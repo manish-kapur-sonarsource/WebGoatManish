@@ -1,0 +1,47 @@
+diff --git a/src/main/java/org/owasp/webgoat/lessons/ssrf/SSRFTask1.java b/src/main/java/org/owasp/webgoat/lessons/ssrf/SSRFTask1.java
+index 411ecc95..d9768cfa 100644
+--- a/src/main/java/org/owasp/webgoat/lessons/ssrf/SSRFTask1.java
++++ b/src/main/java/org/owasp/webgoat/lessons/ssrf/SSRFTask1.java
+@@ -7,6 +7,8 @@ package org.owasp.webgoat.lessons.ssrf;
+ import static org.owasp.webgoat.container.assignments.AttackResultBuilder.failed;
+ import static org.owasp.webgoat.container.assignments.AttackResultBuilder.success;
+ 
++import java.io.InputStream;
++import java.net.URL;
+ import org.owasp.webgoat.container.assignments.AssignmentEndpoint;
+ import org.owasp.webgoat.container.assignments.AssignmentHints;
+ import org.owasp.webgoat.container.assignments.AttackResult;
+@@ -26,6 +28,14 @@ public class SSRFTask1 implements AssignmentEndpoint {
+   }
+ 
+   protected AttackResult stealTheCheese(String url) {
++    try {
++      new URL(url).openStream();
++      return success(this)
++          .feedback("ssrf.success")
++          .output("The actual SSRF vulnerability worked")
++          .build();
++    } catch (Exception e) { }
++
+     try {
+       StringBuilder html = new StringBuilder();
+ 
+diff --git a/src/main/java/org/owasp/webgoat/lessons/ssrf/SSRFTask2.java b/src/main/java/org/owasp/webgoat/lessons/ssrf/SSRFTask2.java
+index 9f7a09c0..cb8c26e7 100644
+--- a/src/main/java/org/owasp/webgoat/lessons/ssrf/SSRFTask2.java
++++ b/src/main/java/org/owasp/webgoat/lessons/ssrf/SSRFTask2.java
+@@ -31,6 +31,14 @@ public class SSRFTask2 implements AssignmentEndpoint {
+   }
+ 
+   protected AttackResult furBall(String url) {
++    try {
++      new URL(url).openStream();
++      return success(this)
++          .feedback("ssrf.success")
++          .output("The actual SSRF vulnerability worked")
++          .build();
++    } catch (Exception e) {}
++
+     if (url.matches("http://ifconfig\\.pro")) {
+       String html;
+       try (InputStream in = new URL(url).openStream()) {

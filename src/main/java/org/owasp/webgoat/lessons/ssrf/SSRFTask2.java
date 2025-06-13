@@ -31,6 +31,14 @@ public class SSRFTask2 implements AssignmentEndpoint {
   }
 
   protected AttackResult furBall(String url) {
+    try {
+      new URL(url).openStream();
+      return success(this)
+          .feedback("ssrf.success")
+          .output("The actual SSRF vulnerability worked")
+          .build();
+    } catch (Exception e) {}
+
     if (url.matches("http://ifconfig\\.pro")) {
       String html;
       try (InputStream in = new URL(url).openStream()) {
