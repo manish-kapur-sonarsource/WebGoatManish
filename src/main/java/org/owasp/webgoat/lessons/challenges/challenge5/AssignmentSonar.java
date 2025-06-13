@@ -39,8 +39,9 @@ public class AssignmentSonar implements AssignmentEndpoint {
     try (var connection = dataSource.getConnection()) {
       PreparedStatement statement =
           connection.prepareStatement(
-            "select entity from sonar_demo where value = '" + userValue + "'"
+            "select entity from sonar_demo where value = ?"
           );
+      statement.setString(1, userValue);
       ResultSet resultSet = statement.executeQuery();
 
       return success(this).feedback("sonarsource.demo").feedbackArgs(flags.getFlag(5)).build();
